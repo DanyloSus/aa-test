@@ -1,0 +1,72 @@
+[
+  {
+    "accountId": 0,
+    "email": "john@doe",
+    "authToken": "fd9d3371-4968-411f-a3ac-50baa65b0f80",
+    "creationDate": "2024-01-16",
+    "profiles": [
+      {
+        "profileId": 0,
+        "country": "USA",
+        "marketplace": "Amazon",
+        "campaigns": [
+          {
+            "campaignId": 0,
+            "clicks": 120,
+            "cost": 120,
+            "date": "2024-01-16"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "accountId": 1,
+    "email": "expample@example",
+    "authToken": "expample",
+    "creationDate": "2024-01-11",
+    "profiles": [
+      {
+        "profileId": 0,
+        "country": "USA",
+        "marketplace": "Amazon",
+        "campaigns": []
+      }
+    ]
+  },
+  {
+    "accountId": 2,
+    "email": "danylo@danylo",
+    "authToken": "sus",
+    "creationDate": "2005-04-20",
+    "profiles": []
+  },
+  {
+    "accountId": 3,
+    "email": "danylo@danylo",
+    "authToken": "sus",
+    "creationDate": "2005-04-20",
+    "profiles": []
+  },
+  {
+    "accountId": 4,
+    "email": "danylo@danylo",
+    "authToken": "sus",
+    "creationDate": "2005-04-20",
+    "profiles": []
+  },
+  {
+    "accountId": 5,
+    "email": "danylo@danylo",
+    "authToken": "sus",
+    "creationDate": "2005-04-20",
+    "profiles": []
+  },
+  {
+    "accountId": 6,
+    "email": "danylo@danylo",
+    "authToken": "sus",
+    "creationDate": "2005-04-20",
+    "profiles": []
+  }
+]
