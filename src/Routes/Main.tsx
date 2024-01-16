@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import data from "../data.json";
 import Pagination from "../Elements/Pagination";
 import { AccountType } from "../App";
+import { Link } from "react-router-dom";
 
 type SortType =
   | "id"
@@ -152,12 +153,14 @@ const Main = () => {
         </thead>
         <tbody>
           {sortedData!.slice((page - 1) * 5, page * 5).map((account, index) => (
-            <tr className="row align-items-center py-1 " key={index}>
-              <td className="col">{account.accountId}</td>
-              <td className="col">{account.email}</td>
-              <td className="col">{account.authToken}</td>
-              <td className="col">{account.creationDate.toDateString()}</td>
-            </tr>
+            <Link to={`/${account.accountId}`}>
+              <tr className="row align-items-center py-1 " key={index}>
+                <td className="col">{account.accountId}</td>
+                <td className="col">{account.email}</td>
+                <td className="col">{account.authToken}</td>
+                <td className="col">{account.creationDate.toDateString()}</td>
+              </tr>
+            </Link>
           ))}
         </tbody>
       </table>

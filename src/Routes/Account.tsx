@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import data from "../data.json";
 import Pagination from "../Elements/Pagination";
 import { ProfileType } from "../App";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 type SortType = "id" | "country" | "market" | "idB" | "countryB" | "marketB";
 
@@ -131,12 +131,14 @@ const Account = () => {
           </tr>
         </thead>
         <tbody>
-          {sortedData!.slice((page - 1) * 5, page * 5).map((account, index) => (
-            <tr className="row align-items-center py-1 " key={index}>
-              <td className="col">{account.profileId}</td>
-              <td className="col">{account.country}</td>
-              <td className="col">{account.marketplace}</td>
-            </tr>
+          {sortedData!.slice((page - 1) * 5, page * 5).map((profile, index) => (
+            <Link to={`/${param.accountID}/${profile.profileId}`}>
+              <tr className="row align-items-center py-1 " key={index}>
+                <td className="col">{profile.profileId}</td>
+                <td className="col">{profile.country}</td>
+                <td className="col">{profile.marketplace}</td>
+              </tr>
+            </Link>
           ))}
         </tbody>
       </table>
