@@ -99,7 +99,7 @@ const Account = () => {
     </svg>
   );
 
-  return (
+  return sortedData.length ? (
     <>
       <h3>{data[accountIndex].email}'s profiles</h3>
       <table className="container w-50-sm text-center">
@@ -107,7 +107,7 @@ const Account = () => {
           <tr className="row fw-bold py-1">
             <th
               role="button"
-              className="col d-flex align-items-center justify-content-center"
+              className="col d-flex align-items-center justify-content-center py-1"
               onClick={() => handleChangeSort("id")}
             >
               ProfileId
@@ -115,7 +115,7 @@ const Account = () => {
             </th>
             <th
               role="button"
-              className="col d-flex align-items-center justify-content-center"
+              className="col d-flex align-items-center justify-content-center py-1"
               onClick={() => handleChangeSort("country")}
             >
               Country
@@ -123,7 +123,7 @@ const Account = () => {
             </th>
             <th
               role="button"
-              className="col d-flex align-items-center justify-content-center"
+              className="col d-flex align-items-center justify-content-center py-1"
               onClick={() => handleChangeSort("market")}
             >
               Marketplace
@@ -134,10 +134,10 @@ const Account = () => {
         <tbody>
           {sortedData!.slice((page - 1) * 5, page * 5).map((profile, index) => (
             <Link to={`/${param.accountID}/${profile.profileId}`}>
-              <tr className="row align-items-center py-1 " key={index}>
-                <td className="col">{profile.profileId}</td>
-                <td className="col">{profile.country}</td>
-                <td className="col">{profile.marketplace}</td>
+              <tr className="row align-items-center" key={index}>
+                <td className="col py-1">{profile.profileId}</td>
+                <td className="col py-1">{profile.country}</td>
+                <td className="col py-1">{profile.marketplace}</td>
               </tr>
             </Link>
           ))}
@@ -148,6 +148,12 @@ const Account = () => {
         totalPages={pagesCount}
         onPageChange={setPage}
       />
+      <Link to="/">Back</Link>
+    </>
+  ) : (
+    <>
+      <h3>{data[accountIndex].email} doesn't have any profiles</h3>
+      <Link to="/">Back</Link>
     </>
   );
 };

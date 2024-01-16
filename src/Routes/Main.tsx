@@ -119,7 +119,7 @@ const Main = () => {
           <tr className="row fw-bold py-1">
             <th
               role="button"
-              className="col d-flex align-items-center justify-content-center"
+              className="col d-flex align-items-center justify-content-center py-1"
               onClick={() => handleChangeSort("id")}
             >
               AccountId
@@ -127,7 +127,7 @@ const Main = () => {
             </th>
             <th
               role="button"
-              className="col d-flex align-items-center justify-content-center"
+              className="col d-flex align-items-center justify-content-center py-1"
               onClick={() => handleChangeSort("email")}
             >
               Email
@@ -135,7 +135,7 @@ const Main = () => {
             </th>
             <th
               role="button"
-              className="col d-flex align-items-center justify-content-center"
+              className="col d-flex align-items-center justify-content-center py-1"
               onClick={() => handleChangeSort("auth")}
             >
               AuthToken
@@ -143,7 +143,7 @@ const Main = () => {
             </th>
             <th
               role="button"
-              className="col d-flex align-items-center justify-content-center"
+              className="col d-flex align-items-center justify-content-center py-1"
               onClick={() => handleChangeSort("date")}
             >
               CreationDate
@@ -154,11 +154,13 @@ const Main = () => {
         <tbody>
           {sortedData!.slice((page - 1) * 5, page * 5).map((account, index) => (
             <Link to={`/${account.accountId}`}>
-              <tr className="row align-items-center py-1 " key={index}>
-                <td className="col">{account.accountId}</td>
-                <td className="col">{account.email}</td>
-                <td className="col">{account.authToken}</td>
-                <td className="col">{account.creationDate.toDateString()}</td>
+              <tr className="row align-items-center" key={index}>
+                <td className="col py-1">{account.accountId}</td>
+                <td className="col py-1">{account.email}</td>
+                <td className="col py-1">{account.authToken}</td>
+                <td className="col py-1">
+                  {account.creationDate.toDateString()}
+                </td>
               </tr>
             </Link>
           ))}
