@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import data from "./data.json";
+import Pagination from "./Elements/Pagination";
 
 type CampaignType = {
   campaignId: number;
@@ -40,8 +41,6 @@ const App = () => {
   }));
 
   const pagesCount = Math.ceil(formatedData.length / 5);
-
-  const pageArray = Array.from({ length: pagesCount }, (_, index) => index + 1);
 
   const [sortBy, setSortBy] = useState<SortType>("id");
   const [sortedData, setSortedData] = useState<AccountType[]>(formatedData);
@@ -100,6 +99,7 @@ const App = () => {
       }
     }
     setSortedData(sortData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortBy, page]);
 
   const handleChangeSort = (sort: SortType) => {
@@ -131,19 +131,10 @@ const App = () => {
       />
     </svg>
   );
-  const pagination = (
-    <div>
-      {pageArray.map((pageNumber) => (
-        <p key={pageNumber} onClick={() => setPage(pageNumber)}>
-          Page: {pageNumber}
-        </p>
-      ))}
-    </div>
-  );
 
   return (
     sortedData && (
-      <div className="d-flex vw-100 vh-100 align-items-center justify-content-center">
+      <div className="d-flex vw-100 vh-100 align-items-center justify-content-center flex-column">
         <table className="container w-50-sm text-center">
           <thead>
             <tr className="row fw-bold py-1">
@@ -190,7 +181,11 @@ const App = () => {
               ))}
           </tbody>
         </table>
-        {pagination}
+        <Pagination
+          currentPage={page}
+          totalPages={pagesCount}
+          onPageChange={setPage}
+        />
       </div>
     )
   );
