@@ -4,14 +4,13 @@ export type CampaignType = {
   campaignId: number;
   clicks: number;
   cost: number;
-  date: string;
+  date: Date;
 };
 
 export type ProfileType = {
   profileId: number;
   country: string;
   marketplace: string;
-  campaigns?: CampaignType[];
 };
 
 export type AccountType = {
@@ -19,7 +18,6 @@ export type AccountType = {
   email: string;
   authToken: string;
   creationDate: Date;
-  profiles?: ProfileType[];
 };
 
 const App = () => {

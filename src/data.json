@@ -11,12 +11,84 @@
         "marketplace": "Amazon",
         "campaigns": [
           {
-            "campaignId": 0,
-            "clicks": 120,
+            "campaignId": 1,
+            "clicks": 10,
+            "cost": 10,
+            "date": "2024-01-16"
+          },
+          {
+            "campaignId": 3,
+            "clicks": 12,
+            "cost": 20,
+            "date": "2024-01-16"
+          },
+          {
+            "campaignId": 2,
+            "clicks": 200,
+            "cost": 10,
+            "date": "2024-01-16"
+          },
+          {
+            "campaignId": 8,
+            "clicks": 110,
             "cost": 120,
+            "date": "2024-01-16"
+          },
+          {
+            "campaignId": 7,
+            "clicks": 130,
+            "cost": 110,
+            "date": "2024-01-16"
+          },
+          {
+            "campaignId": 6,
+            "clicks": 120,
+            "cost": 170,
             "date": "2024-01-16"
           }
         ]
+      },
+      {
+        "profileId": 0,
+        "country": "USA",
+        "marketplace": "Amazon",
+        "campaigns": []
+      },
+      {
+        "profileId": 0,
+        "country": "USA",
+        "marketplace": "Amazon",
+        "campaigns": []
+      },
+      {
+        "profileId": 20,
+        "country": "USA",
+        "marketplace": "Amazon",
+        "campaigns": []
+      },
+      {
+        "profileId": 10,
+        "country": "USA",
+        "marketplace": "Amazon",
+        "campaigns": []
+      },
+      {
+        "profileId": 1,
+        "country": "USA",
+        "marketplace": "Amazon",
+        "campaigns": []
+      },
+      {
+        "profileId": 5,
+        "country": "USA",
+        "marketplace": "Amazon",
+        "campaigns": []
+      },
+      {
+        "profileId": 2,
+        "country": "USA",
+        "marketplace": "Amazon",
+        "campaigns": []
       }
     ]
   },
