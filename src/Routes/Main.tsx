@@ -25,6 +25,7 @@ const Main = () => {
   const [sortBy, setSortBy] = useState<SortType>("id");
   const [sortedData, setSortedData] = useState<AccountType[]>(formatedData);
   const [page, setPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   useEffect(() => {
     let sortData;
@@ -78,9 +79,15 @@ const Main = () => {
         break;
       }
     }
+    if (searchTerm) {
+      sortData = sortData.filter((account) =>
+        account.email.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
     setSortedData(sortData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortBy, page]);
+  }, [sortBy, page, searchTerm]);
 
   const handleChangeSort = (sort: SortType) => {
     if (sortBy === sort) {
@@ -88,6 +95,10 @@ const Main = () => {
     } else {
       setSortBy(sort);
     }
+  };
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
   };
 
   const arrow = (
@@ -114,6 +125,12 @@ const Main = () => {
 
   return (
     <>
+      <input
+        type="text"
+        placeholder="Search by email..."
+        value={searchTerm}
+        onChange={handleSearch}
+      />
       <table className="container w-50-sm text-center">
         <thead>
           <tr className="row fw-bold py-1">

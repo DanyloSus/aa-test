@@ -37,6 +37,7 @@ const Account = () => {
   const [sortBy, setSortBy] = useState<SortType>("id");
   const [sortedData, setSortedData] = useState<CampaignType[]>(formatedData);
   const [page, setPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const pagesCount = Math.ceil(formatedData.length / 5);
 
@@ -88,9 +89,17 @@ const Account = () => {
         break;
       }
     }
+    if (searchTerm) {
+      sortData = sortData.filter((profile) =>
+        String(profile.campaignId)
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+      );
+    }
+
     setSortedData(sortData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortBy, page]);
+  }, [sortBy, page, searchTerm]);
 
   const handleChangeSort = (sort: SortType) => {
     if (sortBy === sort) {
@@ -98,6 +107,10 @@ const Account = () => {
     } else {
       setSortBy(sort);
     }
+  };
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
   };
 
   const arrow = (
@@ -122,12 +135,17 @@ const Account = () => {
     </svg>
   );
 
-  return sortedData.length ? (
+  return sortedData.length || searchTerm ? (
     <>
-      {" "}
       <h3>
         {data[accountIndex].profiles[profileIndex].marketplace}'s campaigns
       </h3>
+      <input
+        type="text"
+        placeholder="Search by id..."
+        value={searchTerm}
+        onChange={handleSearch}
+      />
       <table className="container w-50-sm text-center">
         <thead>
           <tr className="row fw-bold">
