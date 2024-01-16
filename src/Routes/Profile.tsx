@@ -32,14 +32,14 @@ const Account = () => {
     date: new Date(profile.date),
   }));
 
-  console.log(formatedData);
-
   const [sortBy, setSortBy] = useState<SortType>("id");
-  const [sortedData, setSortedData] = useState<CampaignType[]>(formatedData);
+  const [sortedData, setSortedData] = useState<CampaignType[]>(
+    formatedData.sort((a, b) => a.campaignId - b.campaignId)
+  );
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
-  const pagesCount = Math.ceil(formatedData.length / 5);
+  const pagesCount = Math.ceil(sortedData.length / 5);
 
   useEffect(() => {
     let sortData;
@@ -90,10 +90,21 @@ const Account = () => {
       }
     }
     if (searchTerm) {
-      sortData = sortData.filter((profile) =>
-        String(profile.campaignId)
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase())
+      sortData = sortData.filter(
+        (profile) =>
+          String(profile.campaignId)
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          String(profile.clicks)
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          String(profile.cost)
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          profile.date
+            .toDateString()
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
       );
     }
 
@@ -111,6 +122,7 @@ const Account = () => {
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
+    setPage(1);
   };
 
   const arrow = (
@@ -142,7 +154,7 @@ const Account = () => {
       </h3>
       <input
         type="text"
-        placeholder="Search by id..."
+        placeholder="Search"
         value={searchTerm}
         onChange={handleSearch}
       />

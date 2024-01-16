@@ -15,14 +15,12 @@ const Account = () => {
 
   const formatedData = data[accountIndex].profiles;
 
-  console.log(formatedData);
-
   const [sortBy, setSortBy] = useState<SortType>("id");
   const [sortedData, setSortedData] = useState<ProfileType[]>(formatedData);
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
-  const pagesCount = Math.ceil(formatedData.length / 5);
+  const pagesCount = Math.ceil(sortedData.length / 5);
 
   useEffect(() => {
     let sortData;
@@ -67,8 +65,15 @@ const Account = () => {
       }
     }
     if (searchTerm) {
-      sortData = sortData.filter((account) =>
-        account.marketplace.toLowerCase().includes(searchTerm.toLowerCase())
+      sortData = sortData.filter(
+        (account) =>
+          account.marketplace
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          String(account.profileId)
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          account.country.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
@@ -86,6 +91,7 @@ const Account = () => {
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
+    setPage(1);
   };
 
   const arrow = (
@@ -115,7 +121,7 @@ const Account = () => {
       <h3>{data[accountIndex].email}'s profiles</h3>
       <input
         type="text"
-        placeholder="Search by marketplace..."
+        placeholder="Search"
         value={searchTerm}
         onChange={handleSearch}
       />

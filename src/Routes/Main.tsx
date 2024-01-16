@@ -19,7 +19,7 @@ const formatedData = data.map((account) => ({
   creationDate: new Date(account.creationDate),
 }));
 
-const pagesCount = Math.ceil(formatedData.length / 5);
+formatedData.sort((a, b) => a.accountId - b.accountId);
 
 const Main = () => {
   const [sortBy, setSortBy] = useState<SortType>("id");
@@ -27,11 +27,15 @@ const Main = () => {
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
+  const pagesCount = Math.ceil(sortedData.length / 5);
+
   useEffect(() => {
     let sortData;
     switch (sortBy) {
       case "id": {
-        sortData = formatedData.sort((a, b) => a.accountId - b.accountId);
+        sortData = formatedData.sort(function (a, b) {
+          return a.accountId - b.accountId;
+        });
         console.log("id");
         break;
       }
@@ -79,15 +83,25 @@ const Main = () => {
         break;
       }
     }
-    if (searchTerm) {
-      sortData = sortData.filter((account) =>
-        account.email.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
+
+    // if (searchTerm) {
+    //   sortData = sortData.filter(
+    //     (account) =>
+    //       account.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    //       String(account.accountId)
+    //         .toLowerCase()
+    //         .includes(searchTerm.toLowerCase()) ||
+    //       account.authToken.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    //       account.creationDate
+    //         .toDateString()
+    //         .toLowerCase()
+    //         .includes(searchTerm.toLowerCase())
+    //   );
+    // }
 
     setSortedData(sortData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortBy, page, searchTerm]);
+  }, [sortBy, searchTerm]);
 
   const handleChangeSort = (sort: SortType) => {
     if (sortBy === sort) {
@@ -99,6 +113,7 @@ const Main = () => {
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
+    setPage(1);
   };
 
   const arrow = (
@@ -127,7 +142,7 @@ const Main = () => {
     <>
       <input
         type="text"
-        placeholder="Search by email..."
+        placeholder="Search"
         value={searchTerm}
         onChange={handleSearch}
       />
@@ -170,8 +185,8 @@ const Main = () => {
         </thead>
         <tbody>
           {sortedData!.slice((page - 1) * 5, page * 5).map((account, index) => (
-            <Link to={`/${account.accountId}`}>
-              <tr className="row align-items-center" key={index}>
+            <Link to={`/${account.accountId}`} key={index}>
+              <tr className="row align-items-center">
                 <td className="col py-1">{account.accountId}</td>
                 <td className="col py-1">{account.email}</td>
                 <td className="col py-1">{account.authToken}</td>
