@@ -124,6 +124,10 @@ const Account = () => {
 
   return (
     <>
+      {" "}
+      <h3>
+        {data[accountIndex].profiles[profileIndex].marketplace}'s campaigns
+      </h3>
       <table className="container w-50-sm text-center">
         <thead>
           <tr className="row fw-bold py-1">

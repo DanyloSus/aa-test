@@ -101,6 +101,7 @@ const Account = () => {
 
   return (
     <>
+      <h3>{data[accountIndex].email}'s profiles</h3>
       <table className="container w-50-sm text-center">
         <thead>
           <tr className="row fw-bold py-1">
