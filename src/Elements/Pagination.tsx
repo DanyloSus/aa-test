@@ -34,10 +34,10 @@ const Pagination = (props: PaginationProps) => {
 
     return pagesToShow.map((page, index) => (
       <span
-        role="button"
+        role={typeof page === "number" ? "button" : ""}
         key={index}
         onClick={() => handlePageClick(page)}
-        className={props.currentPage === page ? "active" : ""}
+        className={props.currentPage === page ? "opacity-100" : "opacity-50 "}
       >
         {page}
       </span>

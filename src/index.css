@@ -1,0 +1,38 @@
+span[role="button"] {
+  opacity: 0.5;
+  scale: 1;
+
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    opacity: 1 !important;
+    scale: 1.5;
+  }
+}
+
+table,
+th,
+td {
+  border: 1px solid white;
+  border-collapse: collapse;
+
+  transition: border-color 0.2s ease-in-out;
+}
+
+table:hover th,
+table:hover td {
+  border-color: grey;
+}
+
+svg {
+  transition: transform 0.2s ease-in-out;
+}
+
+th:hover,
+tr:hover > td {
+  border-color: black !important;
+}
+
+a {
+  color: black;
+}

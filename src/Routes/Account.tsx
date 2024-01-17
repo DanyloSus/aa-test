@@ -15,13 +15,12 @@ const Account = () => {
 
   const formatedData = data[accountIndex].profiles;
 
-  console.log(formatedData);
-
   const [sortBy, setSortBy] = useState<SortType>("id");
   const [sortedData, setSortedData] = useState<ProfileType[]>(formatedData);
   const [page, setPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
-  const pagesCount = Math.ceil(formatedData.length / 5);
+  const pagesCount = Math.ceil(sortedData.length / 5);
 
   useEffect(() => {
     let sortData;
@@ -65,9 +64,22 @@ const Account = () => {
         break;
       }
     }
+    if (searchTerm) {
+      sortData = sortData.filter(
+        (account) =>
+          account.marketplace
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          String(account.profileId)
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          account.country.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
     setSortedData(sortData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortBy, page]);
+  }, [sortBy, page, searchTerm]);
 
   const handleChangeSort = (sort: SortType) => {
     if (sortBy === sort) {
@@ -75,6 +87,11 @@ const Account = () => {
     } else {
       setSortBy(sort);
     }
+  };
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+    setPage(1);
   };
 
   const arrow = (
@@ -99,15 +116,21 @@ const Account = () => {
     </svg>
   );
 
-  return (
+  return sortedData.length || searchTerm ? (
     <>
       <h3>{data[accountIndex].email}'s profiles</h3>
+      <input
+        type="text"
+        placeholder="Search"
+        value={searchTerm}
+        onChange={handleSearch}
+      />
       <table className="container w-50-sm text-center">
         <thead>
           <tr className="row fw-bold py-1">
             <th
               role="button"
-              className="col d-flex align-items-center justify-content-center"
+              className="col d-flex align-items-center justify-content-center py-1"
               onClick={() => handleChangeSort("id")}
             >
               ProfileId
@@ -115,7 +138,7 @@ const Account = () => {
             </th>
             <th
               role="button"
-              className="col d-flex align-items-center justify-content-center"
+              className="col d-flex align-items-center justify-content-center py-1"
               onClick={() => handleChangeSort("country")}
             >
               Country
@@ -123,7 +146,7 @@ const Account = () => {
             </th>
             <th
               role="button"
-              className="col d-flex align-items-center justify-content-center"
+              className="col d-flex align-items-center justify-content-center py-1"
               onClick={() => handleChangeSort("market")}
             >
               Marketplace
@@ -134,10 +157,10 @@ const Account = () => {
         <tbody>
           {sortedData!.slice((page - 1) * 5, page * 5).map((profile, index) => (
             <Link to={`/${param.accountID}/${profile.profileId}`}>
-              <tr className="row align-items-center py-1 " key={index}>
-                <td className="col">{profile.profileId}</td>
-                <td className="col">{profile.country}</td>
-                <td className="col">{profile.marketplace}</td>
+              <tr className="row align-items-center" key={index}>
+                <td className="col py-1">{profile.profileId}</td>
+                <td className="col py-1">{profile.country}</td>
+                <td className="col py-1">{profile.marketplace}</td>
               </tr>
             </Link>
           ))}
@@ -148,6 +171,12 @@ const Account = () => {
         totalPages={pagesCount}
         onPageChange={setPage}
       />
+      <Link to="/">Back</Link>
+    </>
+  ) : (
+    <>
+      <h3>{data[accountIndex].email} doesn't have any profiles</h3>
+      <Link to="/">Back</Link>
     </>
   );
 };

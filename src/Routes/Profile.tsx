@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import data from "../data.json";
 import Pagination from "../Elements/Pagination";
 import { CampaignType } from "../App";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 type SortType =
   | "id"
@@ -32,13 +32,14 @@ const Account = () => {
     date: new Date(profile.date),
   }));
 
-  console.log(formatedData);
-
   const [sortBy, setSortBy] = useState<SortType>("id");
-  const [sortedData, setSortedData] = useState<CampaignType[]>(formatedData);
+  const [sortedData, setSortedData] = useState<CampaignType[]>(
+    formatedData.sort((a, b) => a.campaignId - b.campaignId)
+  );
   const [page, setPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
-  const pagesCount = Math.ceil(formatedData.length / 5);
+  const pagesCount = Math.ceil(sortedData.length / 5);
 
   useEffect(() => {
     let sortData;
@@ -88,9 +89,28 @@ const Account = () => {
         break;
       }
     }
+    if (searchTerm) {
+      sortData = sortData.filter(
+        (profile) =>
+          String(profile.campaignId)
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          String(profile.clicks)
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          String(profile.cost)
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          profile.date
+            .toDateString()
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
+      );
+    }
+
     setSortedData(sortData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortBy, page]);
+  }, [sortBy, page, searchTerm]);
 
   const handleChangeSort = (sort: SortType) => {
     if (sortBy === sort) {
@@ -98,6 +118,11 @@ const Account = () => {
     } else {
       setSortBy(sort);
     }
+  };
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+    setPage(1);
   };
 
   const arrow = (
@@ -122,18 +147,23 @@ const Account = () => {
     </svg>
   );
 
-  return (
+  return sortedData.length || searchTerm ? (
     <>
-      {" "}
       <h3>
         {data[accountIndex].profiles[profileIndex].marketplace}'s campaigns
       </h3>
+      <input
+        type="text"
+        placeholder="Search"
+        value={searchTerm}
+        onChange={handleSearch}
+      />
       <table className="container w-50-sm text-center">
         <thead>
-          <tr className="row fw-bold py-1">
+          <tr className="row fw-bold">
             <th
               role="button"
-              className="col d-flex align-items-center justify-content-center"
+              className="col d-flex align-items-center justify-content-center py-1"
               onClick={() => handleChangeSort("id")}
             >
               CampaignId
@@ -141,7 +171,7 @@ const Account = () => {
             </th>
             <th
               role="button"
-              className="col d-flex align-items-center justify-content-center"
+              className="col d-flex align-items-center justify-content-center py-1"
               onClick={() => handleChangeSort("clicks")}
             >
               Clicks
@@ -149,7 +179,7 @@ const Account = () => {
             </th>
             <th
               role="button"
-              className="col d-flex align-items-center justify-content-center"
+              className="col d-flex align-items-center justify-content-center py-1"
               onClick={() => handleChangeSort("cost")}
             >
               Cost
@@ -157,7 +187,7 @@ const Account = () => {
             </th>
             <th
               role="button"
-              className="col d-flex align-items-center justify-content-center"
+              className="col d-flex align-items-center justify-content-center py-1"
               onClick={() => handleChangeSort("date")}
             >
               Date
@@ -167,11 +197,11 @@ const Account = () => {
         </thead>
         <tbody>
           {sortedData!.slice((page - 1) * 5, page * 5).map((profile, index) => (
-            <tr className="row align-items-center py-1 " key={index}>
-              <td className="col">{profile.campaignId}</td>
-              <td className="col">{profile.clicks}</td>
-              <td className="col">{profile.cost}</td>
-              <td className="col">{profile.date.toDateString()}</td>
+            <tr className="row align-items-center" key={index}>
+              <td className="col py-1">{profile.campaignId}</td>
+              <td className="col py-1">{profile.clicks}</td>
+              <td className="col py-1">{profile.cost}</td>
+              <td className="col py-1">{profile.date.toDateString()}</td>
             </tr>
           ))}
         </tbody>
@@ -181,6 +211,12 @@ const Account = () => {
         totalPages={pagesCount}
         onPageChange={setPage}
       />
+      <Link to={`/${accountIndex}`}>Back</Link>
+    </>
+  ) : (
+    <>
+      <h3>{data[accountIndex].email} doesn't have any profiles</h3>
+      <Link to={`/${accountIndex}`}>Back</Link>
     </>
   );
 };
