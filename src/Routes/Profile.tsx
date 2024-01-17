@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import data from "../data.json";
 import Pagination from "../Elements/Pagination";
-import { CampaignType } from "../App";
 import { Link, useParams } from "react-router-dom";
+
+import { CampaignType } from "../App";
+
+import data from "../data.json";
 
 type SortType =
   | "id"
@@ -27,11 +29,13 @@ const Account = () => {
 
   const profileData = data[accountIndex].profiles[profileIndex].campaigns;
 
+  // formated data for date
   const formatedData = profileData.map((profile) => ({
     ...profile,
     date: new Date(profile.date),
   }));
 
+  // auto sort formated data
   formatedData.sort((a, b) => b.campaignId - a.campaignId);
 
   const [sortBy, setSortBy] = useState<SortType>("id");
@@ -43,8 +47,10 @@ const Account = () => {
 
   const pagesCount = Math.ceil(sortedData.length / 5);
 
+  // use effect for sorting and searching
   useEffect(() => {
     let sortData;
+    // switch case for sorting
     switch (sortBy) {
       case "idB": {
         sortData = formatedData.sort((a, b) => a.campaignId - b.campaignId);
@@ -91,6 +97,8 @@ const Account = () => {
         break;
       }
     }
+
+    // searching code
     sortData = sortData.filter(
       (profile) =>
         String(profile.campaignId)
@@ -112,7 +120,7 @@ const Account = () => {
 
   const handleChangeSort = (sort: SortType) => {
     if (sortBy === sort) {
-      setSortBy((sort + "B") as SortType);
+      setSortBy((sort + "B") as SortType); // for creating backward sorting
     } else {
       setSortBy(sort);
     }

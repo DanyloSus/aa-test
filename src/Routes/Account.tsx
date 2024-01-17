@@ -1,71 +1,80 @@
 import { useEffect, useState } from "react";
-import data from "../data.json";
 import Pagination from "../Elements/Pagination";
-import { ProfileType } from "../App";
 import { Link, useParams } from "react-router-dom";
+
+import { ProfileType } from "../App";
+
+import data from "../data.json";
 
 type SortType = "id" | "country" | "market" | "idB" | "countryB" | "marketB";
 
 const Account = () => {
   const param = useParams();
 
+  // get index of account from params
   const accountIndex = data.findIndex(
     (account) => account.accountId === Number(param.accountID)
   );
 
-  const formatedData = data[accountIndex].profiles;
+  // profile data
+  const profileData = data[accountIndex].profiles;
 
-  formatedData.sort((a, b) => b.profileId - a.profileId);
+  // auto sort profile data
+  profileData.sort((a, b) => b.profileId - a.profileId);
 
   const [sortBy, setSortBy] = useState<SortType>("id");
-  const [sortedData, setSortedData] = useState<ProfileType[]>(formatedData);
+  const [sortedData, setSortedData] = useState<ProfileType[]>(profileData);
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   const pagesCount = Math.ceil(sortedData.length / 5);
 
+  // use effect for sorting and searching
   useEffect(() => {
     let sortData;
+    // switch case for sorting
     switch (sortBy) {
       case "idB": {
-        sortData = formatedData.sort((a, b) => a.profileId - b.profileId);
+        sortData = profileData.sort((a, b) => a.profileId - b.profileId);
         console.log("idB");
         break;
       }
       case "countryB": {
-        sortData = formatedData.sort((a, b) =>
+        sortData = profileData.sort((a, b) =>
           b.country.localeCompare(a.country)
         );
         console.log("countryB");
         break;
       }
       case "marketB": {
-        sortData = formatedData.sort((a, b) =>
+        sortData = profileData.sort((a, b) =>
           b.marketplace.localeCompare(a.marketplace)
         );
         console.log("marketB");
         break;
       }
       case "id": {
-        sortData = formatedData.sort((a, b) => b.profileId - a.profileId);
+        sortData = profileData.sort((a, b) => b.profileId - a.profileId);
         console.log("id");
         break;
       }
       case "country": {
-        sortData = formatedData.sort((a, b) =>
+        sortData = profileData.sort((a, b) =>
           a.country.localeCompare(b.country)
         );
         console.log("country");
         break;
       }
       case "market": {
-        sortData = formatedData.sort((a, b) =>
+        sortData = profileData.sort((a, b) =>
           a.marketplace.localeCompare(b.marketplace)
         );
         console.log("market");
         break;
       }
     }
+
+    // searching code
     sortData = sortData.filter(
       (account) =>
         account.marketplace.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -81,7 +90,7 @@ const Account = () => {
 
   const handleChangeSort = (sort: SortType) => {
     if (sortBy === sort) {
-      setSortBy((sort + "B") as SortType);
+      setSortBy((sort + "B") as SortType); // for creating backward sorting
     } else {
       setSortBy(sort);
     }

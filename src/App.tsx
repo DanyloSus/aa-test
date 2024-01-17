@@ -14,14 +14,15 @@ export type ProfileType = {
 };
 
 export type AccountType = {
-  accountId?: number;
-  email?: string;
-  authToken?: string;
-  creationDate?: Date;
+  accountId: number;
+  email: string;
+  authToken: string;
+  creationDate: Date;
 };
 
 const App = () => {
   return (
+    // layout of sites
     <div className="d-flex vw-100 vh-100 align-items-center justify-content-center flex-column">
       <Outlet />
     </div>

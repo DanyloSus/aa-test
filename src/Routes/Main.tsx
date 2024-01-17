@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import data from "../data.json";
 import Pagination from "../Elements/Pagination";
-import { AccountType } from "../App";
 import { Link } from "react-router-dom";
+
+import data from "../data.json";
+
+import { AccountType } from "../App";
 
 type SortType =
   | "id"
@@ -14,11 +16,13 @@ type SortType =
   | "authB"
   | "dateB";
 
+// formated data for date
 const formatedData = data.map((account) => ({
   ...account,
   creationDate: new Date(account.creationDate),
 }));
 
+// auto sort formated data
 formatedData.sort(function (a, b) {
   return b.accountId - a.accountId;
 });
@@ -31,8 +35,10 @@ const Main = () => {
 
   const pagesCount = Math.ceil(sortedData.length / 5);
 
+  // use effect for sorting and searching
   useEffect(() => {
     let sortData = formatedData;
+    // switch case for sorting
     switch (sortBy) {
       case "idB": {
         sortData = sortData.sort(function (a, b) {
@@ -88,6 +94,7 @@ const Main = () => {
       }
     }
 
+    // searching code
     sortData = sortData.filter(
       (account) =>
         account.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -107,7 +114,7 @@ const Main = () => {
 
   const handleChangeSort = (sort: SortType) => {
     if (sortBy === sort) {
-      setSortBy((sort + "B") as SortType);
+      setSortBy((sort + "B") as SortType); // for creating backward sorting
     } else {
       setSortBy(sort);
     }
