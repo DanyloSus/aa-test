@@ -32,6 +32,8 @@ const Account = () => {
     date: new Date(profile.date),
   }));
 
+  formatedData.sort((a, b) => b.campaignId - a.campaignId);
+
   const [sortBy, setSortBy] = useState<SortType>("id");
   const [sortedData, setSortedData] = useState<CampaignType[]>(
     formatedData.sort((a, b) => a.campaignId - b.campaignId)
@@ -44,69 +46,65 @@ const Account = () => {
   useEffect(() => {
     let sortData;
     switch (sortBy) {
-      case "id": {
-        sortData = formatedData.sort((a, b) => a.campaignId - b.campaignId);
-        console.log("id");
-        break;
-      }
-      case "clicks": {
-        sortData = formatedData.sort((a, b) => a.clicks - b.clicks);
-        console.log("clicks");
-        break;
-      }
-      case "cost": {
-        sortData = formatedData.sort((a, b) => a.cost - b.cost);
-        console.log("auth");
-        break;
-      }
-      case "date": {
-        sortData = formatedData.sort(
-          (a, b) => a.date.getDate() - b.date.getDate()
-        );
-        console.log("date");
-        break;
-      }
       case "idB": {
-        sortData = formatedData.sort((a, b) => b.campaignId - a.campaignId);
+        sortData = formatedData.sort((a, b) => a.campaignId - b.campaignId);
         console.log("idB");
         break;
       }
       case "clicksB": {
-        sortData = formatedData.sort((a, b) => b.clicks - a.clicks);
-        console.log("emailB");
+        sortData = formatedData.sort((a, b) => a.clicks - b.clicks);
+        console.log("clicksB");
         break;
       }
       case "costB": {
-        sortData = formatedData.sort((a, b) => b.cost - a.cost);
+        sortData = formatedData.sort((a, b) => a.cost - b.cost);
         console.log("authB");
         break;
       }
       case "dateB": {
         sortData = formatedData.sort(
-          (a, b) => b.date.getDate() - a.date.getDate()
+          (a, b) => a.date.getDate() - b.date.getDate()
         );
         console.log("dateB");
         break;
       }
+      case "id": {
+        sortData = formatedData.sort((a, b) => b.campaignId - a.campaignId);
+        console.log("id");
+        break;
+      }
+      case "clicks": {
+        sortData = formatedData.sort((a, b) => b.clicks - a.clicks);
+        console.log("email");
+        break;
+      }
+      case "cost": {
+        sortData = formatedData.sort((a, b) => b.cost - a.cost);
+        console.log("auth");
+        break;
+      }
+      case "date": {
+        sortData = formatedData.sort(
+          (a, b) => b.date.getDate() - a.date.getDate()
+        );
+        console.log("date");
+        break;
+      }
     }
-    if (searchTerm) {
-      sortData = sortData.filter(
-        (profile) =>
-          String(profile.campaignId)
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase()) ||
-          String(profile.clicks)
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase()) ||
-          String(profile.cost)
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase()) ||
-          profile.date
-            .toDateString()
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase())
-      );
-    }
+    sortData = sortData.filter(
+      (profile) =>
+        String(profile.campaignId)
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        String(profile.clicks)
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        String(profile.cost).toLowerCase().includes(searchTerm.toLowerCase()) ||
+        profile.date
+          .toDateString()
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+    );
 
     setSortedData(sortData);
     // eslint-disable-next-line react-hooks/exhaustive-deps

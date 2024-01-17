@@ -15,6 +15,8 @@ const Account = () => {
 
   const formatedData = data[accountIndex].profiles;
 
+  formatedData.sort((a, b) => b.profileId - a.profileId);
+
   const [sortBy, setSortBy] = useState<SortType>("id");
   const [sortedData, setSortedData] = useState<ProfileType[]>(formatedData);
   const [page, setPage] = useState(1);
@@ -25,57 +27,53 @@ const Account = () => {
   useEffect(() => {
     let sortData;
     switch (sortBy) {
-      case "id": {
+      case "idB": {
         sortData = formatedData.sort((a, b) => a.profileId - b.profileId);
+        console.log("idB");
+        break;
+      }
+      case "countryB": {
+        sortData = formatedData.sort((a, b) =>
+          b.country.localeCompare(a.country)
+        );
+        console.log("countryB");
+        break;
+      }
+      case "marketB": {
+        sortData = formatedData.sort((a, b) =>
+          b.marketplace.localeCompare(a.marketplace)
+        );
+        console.log("marketB");
+        break;
+      }
+      case "id": {
+        sortData = formatedData.sort((a, b) => b.profileId - a.profileId);
         console.log("id");
         break;
       }
       case "country": {
         sortData = formatedData.sort((a, b) =>
-          b.country.localeCompare(a.country)
+          a.country.localeCompare(b.country)
         );
         console.log("country");
         break;
       }
       case "market": {
         sortData = formatedData.sort((a, b) =>
-          b.marketplace.localeCompare(a.marketplace)
-        );
-        console.log("auth");
-        break;
-      }
-      case "idB": {
-        sortData = formatedData.sort((a, b) => b.profileId - a.profileId);
-        console.log("idB");
-        break;
-      }
-      case "countryB": {
-        sortData = formatedData.sort((a, b) =>
-          a.country.localeCompare(b.country)
-        );
-        console.log("emailB");
-        break;
-      }
-      case "marketB": {
-        sortData = formatedData.sort((a, b) =>
           a.marketplace.localeCompare(b.marketplace)
         );
-        console.log("authB");
+        console.log("market");
         break;
       }
     }
-    if (searchTerm) {
-      sortData = sortData.filter(
-        (account) =>
-          account.marketplace
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase()) ||
-          String(account.profileId)
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase()) ||
-          account.country.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
+    sortData = sortData.filter(
+      (account) =>
+        account.marketplace.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        String(account.profileId)
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        account.country.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     setSortedData(sortData);
     // eslint-disable-next-line react-hooks/exhaustive-deps

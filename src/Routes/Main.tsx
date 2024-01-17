@@ -19,10 +19,8 @@ const formatedData = data.map((account) => ({
   creationDate: new Date(account.creationDate),
 }));
 
-formatedData.sort((a, b) => a.accountId - b.accountId);
-
 const Main = () => {
-  const [sortBy, setSortBy] = useState<SortType>("id");
+  const [sortBy, setSortBy] = useState<SortType | "">("");
   const [sortedData, setSortedData] = useState<AccountType[]>(formatedData);
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -30,78 +28,78 @@ const Main = () => {
   const pagesCount = Math.ceil(sortedData.length / 5);
 
   useEffect(() => {
-    let sortData;
+    let sortData = formatedData;
     switch (sortBy) {
-      case "id": {
-        sortData = formatedData.sort(function (a, b) {
+      case "idB": {
+        sortData = sortData.sort(function (a, b) {
           return a.accountId - b.accountId;
         });
-        console.log("id");
-        break;
-      }
-      case "email": {
-        sortData = formatedData.sort((a, b) => b.email.localeCompare(a.email));
-        console.log("email");
-        break;
-      }
-      case "auth": {
-        sortData = formatedData.sort((a, b) =>
-          b.authToken.localeCompare(a.authToken)
-        );
-        console.log("auth");
-        break;
-      }
-      case "date": {
-        sortData = formatedData.sort(
-          (a, b) => b.creationDate.getDate() - a.creationDate.getDate()
-        );
-        console.log("date");
-        break;
-      }
-      case "idB": {
-        sortData = formatedData.sort((a, b) => b.accountId - a.accountId);
         console.log("idB");
         break;
       }
       case "emailB": {
-        sortData = formatedData.sort((a, b) => a.email.localeCompare(b.email));
+        sortData = sortData.sort((a, b) => b.email.localeCompare(a.email));
         console.log("emailB");
         break;
       }
       case "authB": {
-        sortData = formatedData.sort((a, b) =>
-          a.authToken.localeCompare(b.authToken)
+        sortData = sortData.sort((a, b) =>
+          b.authToken.localeCompare(a.authToken)
         );
         console.log("authB");
         break;
       }
       case "dateB": {
-        sortData = formatedData.sort(
-          (a, b) => a.creationDate.getDate() - b.creationDate.getDate()
-        );
+        sortData = sortData.sort(function (a, b) {
+          return b.creationDate.getDate() - a.creationDate.getDate();
+        });
         console.log("dateB");
+        break;
+      }
+      case "id": {
+        sortData = sortData.sort(function (a, b) {
+          return b.accountId - a.accountId;
+        });
+        console.log("id");
+        break;
+      }
+      case "email": {
+        sortData = sortData.sort((a, b) => a.email.localeCompare(b.email));
+        console.log("email");
+        break;
+      }
+      case "auth": {
+        sortData = sortData.sort((a, b) =>
+          a.authToken.localeCompare(b.authToken)
+        );
+        console.log("auth");
+        break;
+      }
+      case "date": {
+        sortData = sortData.sort(function (a, b) {
+          return a.creationDate.getDate() - b.creationDate.getDate();
+        });
+        console.log("date");
         break;
       }
     }
 
-    // if (searchTerm) {
-    //   sortData = sortData.filter(
-    //     (account) =>
-    //       account.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    //       String(account.accountId)
-    //         .toLowerCase()
-    //         .includes(searchTerm.toLowerCase()) ||
-    //       account.authToken.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    //       account.creationDate
-    //         .toDateString()
-    //         .toLowerCase()
-    //         .includes(searchTerm.toLowerCase())
-    //   );
-    // }
+    sortData = sortData.filter(
+      (account) =>
+        account.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        String(account.accountId)
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        account.authToken.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        account.creationDate
+          .toDateString()
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+    );
 
     setSortedData(sortData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortBy, searchTerm]);
+  }, [sortBy, searchTerm, page]);
 
   const handleChangeSort = (sort: SortType) => {
     if (sortBy === sort) {
@@ -125,7 +123,7 @@ const Main = () => {
       stroke="currentColor"
       className="ms-2"
       style={
-        sortBy.includes("B")
+        sortBy!.includes("B")
           ? { width: "24px", transform: "rotate(180deg)" }
           : { width: "24px" }
       }
@@ -191,7 +189,7 @@ const Main = () => {
                 <td className="col py-1">{account.email}</td>
                 <td className="col py-1">{account.authToken}</td>
                 <td className="col py-1">
-                  {account.creationDate.toDateString()}
+                  {account.creationDate!.toDateString()}
                 </td>
               </tr>
             </Link>

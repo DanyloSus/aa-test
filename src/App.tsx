@@ -14,10 +14,10 @@ export type ProfileType = {
 };
 
 export type AccountType = {
-  accountId: number;
-  email: string;
-  authToken: string;
-  creationDate: Date;
+  accountId?: number;
+  email?: string;
+  authToken?: string;
+  creationDate?: Date;
 };
 
 const App = () => {
