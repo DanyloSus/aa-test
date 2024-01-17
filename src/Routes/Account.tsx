@@ -154,8 +154,8 @@ const Account = () => {
         </thead>
         <tbody>
           {sortedData!.slice((page - 1) * 5, page * 5).map((profile, index) => (
-            <Link to={`/${param.accountID}/${profile.profileId}`}>
-              <tr className="row align-items-center" key={index}>
+            <Link to={`/${param.accountID}/${profile.profileId}`} key={index}>
+              <tr className="row align-items-center">
                 <td className="col py-1">{profile.profileId}</td>
                 <td className="col py-1">{profile.country}</td>
                 <td className="col py-1">{profile.marketplace}</td>

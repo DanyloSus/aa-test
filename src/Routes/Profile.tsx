@@ -213,7 +213,10 @@ const Account = () => {
     </>
   ) : (
     <>
-      <h3>{data[accountIndex].email} doesn't have any profiles</h3>
+      <h3>
+        {data[accountIndex].profiles[profileIndex].marketplace} doesn't have any
+        campaigns
+      </h3>
       <Link to={`/${accountIndex}`}>Back</Link>
     </>
   );

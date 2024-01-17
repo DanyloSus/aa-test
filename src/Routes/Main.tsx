@@ -19,8 +19,12 @@ const formatedData = data.map((account) => ({
   creationDate: new Date(account.creationDate),
 }));
 
+formatedData.sort(function (a, b) {
+  return b.accountId - a.accountId;
+});
+
 const Main = () => {
-  const [sortBy, setSortBy] = useState<SortType | "">("");
+  const [sortBy, setSortBy] = useState<SortType>("id");
   const [sortedData, setSortedData] = useState<AccountType[]>(formatedData);
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState<string>("");
